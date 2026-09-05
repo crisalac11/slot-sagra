@@ -1,6 +1,6 @@
 /* Service worker per "Slot della Sagra" — installabile e funzionante offline.
    Ad ogni modifica dei file, alza CACHE_VERSION per forzare l'aggiornamento. */
-const CACHE_VERSION = 'slot-sagra-v1';
+const CACHE_VERSION = 'slot-sagra-v2';
 
 /* Risorse messe in cache all'installazione: dopo la prima apertura la slot
    funziona anche senza connessione. */
@@ -18,8 +18,7 @@ const PRECACHE_URLS = [
   './images/slot/moneybag.png',
   './images/slot/queen.png',
   './images/slot/ten.png',
-  './images/slot/wild.png',
-  './sounds/bonus-music.mp3'
+  './images/slot/wild.png'
 ];
 
 self.addEventListener('install', (event) => {
