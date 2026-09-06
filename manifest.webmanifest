@@ -9,7 +9,7 @@
   "id": "./slot.html",
   "display": "standalone",
   "display_override": ["standalone", "fullscreen", "minimal-ui"],
-  "orientation": "portrait",
+  "orientation": "landscape",
   "background_color": "#0a0000",
   "theme_color": "#7a0d0d",
   "categories": ["games", "entertainment"],
