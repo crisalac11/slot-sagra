@@ -35,6 +35,8 @@
 
   * { box-sizing: border-box; }
 
+  html { overflow-x: hidden; }
+
   body {
     font-family: Georgia, 'Times New Roman', serif;
     background:
@@ -469,6 +471,49 @@
   .spin-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #6b4c05, 0 3px 10px rgba(0,0,0,0.6); }
   .spin-btn:disabled { opacity: 0.55; cursor: default; }
 
+  .auto-btn {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 11px 18px;
+    border-radius: 30px;
+    border: 1px solid var(--gold-dark);
+    background: rgba(0,0,0,0.4);
+    color: var(--gold);
+    cursor: pointer;
+  }
+  .auto-btn.on {
+    background: linear-gradient(160deg, #9dffb6, #1faa4a);
+    color: #06240f;
+    border-color: #0c5c26;
+    animation: autoPulse 1.1s ease-in-out infinite alternate;
+  }
+  @keyframes autoPulse {
+    from { box-shadow: 0 0 8px rgba(70,255,130,0.35); }
+    to   { box-shadow: 0 0 20px rgba(70,255,130,0.7); }
+  }
+  .auto-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* X per uscire: visibile solo quando gira come app installata / a schermo intero */
+  .exit-btn {
+    position: fixed;
+    top: max(8px, env(safe-area-inset-top));
+    left: max(8px, env(safe-area-inset-left));
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--gold-dark);
+    background: rgba(0,0,0,0.55);
+    color: var(--gold);
+    font-size: 20px;
+    line-height: 1;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 44;
+    cursor: pointer;
+  }
+
   .add-amount-group {
     display: flex;
     flex-direction: column;
@@ -847,79 +892,98 @@
     display: contents;   /* su desktop non cambia niente: i figli restano nel flusso */
   }
 
-  @media (max-width: 640px) {
-    :root { --cell: 58px; }
+  /* ---------- PC / schermo grande: gioco centrato, niente spazi morti ---------- */
+  @media (min-width: 900px) and (min-height: 640px) {
     body {
-      padding:
-        calc(10px + env(safe-area-inset-top)) calc(12px + env(safe-area-inset-right))
-        calc(12px + env(safe-area-inset-bottom)) calc(12px + env(safe-area-inset-left));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px 16px;
     }
-    .marquee { padding: 12px; }
-    .marquee.bonus-mode { --cell: 42px; max-width: 96vw; }
-    .reels { gap: 4px; padding: 6px; }
-    .controls { gap: 10px; margin-top: 8px; }
-    .add-amount-group { min-width: 0; width: 100%; }
-    .add-slider { width: 100%; max-width: 320px; }
-    .stat { min-width: 96px; padding: 6px 10px; }
-    .lines-list, .free-spin-hud { max-width: 96vw; }
+    h1 { margin: 0 0 10px; }
+    .marquee { margin: 0; }
+    .control-deck { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .control-deck .controls { margin: 12px 0 0; }
+    .control-deck .sub-note { margin-top: 2px; }
   }
 
-  @media (max-width: 420px) and (orientation: portrait) {
-    :root { --cell: 52px; }
-    h1 { font-size: 13px; margin-bottom: 8px; }
-    .spin-btn { padding: 12px 26px; }
-    .bet-stepper { gap: 6px; }
+  /* ---------- telefono in VERTICALE: slot grande, comandi compatti ---------- */
+  @media (max-width: 760px) and (orientation: portrait) {
+    :root { --cell: min(16.5vw, 12vh); }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding:
+        calc(6px + env(safe-area-inset-top)) calc(6px + env(safe-area-inset-right))
+        calc(8px + env(safe-area-inset-bottom)) calc(6px + env(safe-area-inset-left));
+    }
+    h1 { font-size: 12px; margin: 0 0 6px; }
+    .marquee { margin: 0; padding: 9px 5px; max-width: 100vw; }
+    .marquee.bonus-mode { --cell: min(12vw, 9vh); max-width: 100vw; }
+    .reels { gap: 3px; padding: 4px; }
+    .win-banner { font-size: 15px; }
+    .lines-list { font-size: 10px; max-width: 96vw; }
+    .free-spin-hud { font-size: 10px; max-width: 96vw; padding: 5px 10px; }
+    .control-deck { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .controls { gap: 8px 10px; margin: 4px 0 0; width: 100%; flex-wrap: wrap; }
+    .add-amount-group { flex-direction: row; flex-wrap: wrap; justify-content: center; min-width: 0; width: 100%; gap: 6px; }
+    .add-amount-group label { font-size: 10px; }
+    .add-slider { width: min(60vw, 260px); }
+    .add-credit-btn { font-size: 11px; padding: 7px 10px; }
+    .stat { min-width: 82px; padding: 4px 10px; }
+    .stat .label { font-size: 9px; }
+    .stat .value { font-size: 15px; }
+    .spin-btn { padding: 11px 22px; font-size: 15px; }
+    .auto-btn { padding: 9px 12px; font-size: 12px; }
+    .sub-note { display: none; }
   }
 
-  /* ---------- telefono in orizzontale: layout compatto su due colonne ---------- */
+  /* ---------- telefono in ORIZZONTALE: slot grande a sinistra, comandi a destra ---------- */
   @media (orientation: landscape) and (max-height: 600px) {
     body {
       display: flex;
       flex-flow: row wrap;
-      align-items: flex-start;
-      align-content: flex-start;
+      align-items: center;
+      align-content: center;
       justify-content: center;
-      gap: 12px 4vw;
-      padding: 8px calc(8px + env(safe-area-inset-right)) 8px calc(8px + env(safe-area-inset-left));
+      gap: 8px 2vw;
+      padding: 5px calc(5px + env(safe-area-inset-right)) 5px calc(5px + env(safe-area-inset-left));
       overflow-y: auto;
     }
     h1 { display: none; }
-    :root { --cell: 42px; }
-    .marquee { margin: 0; padding: 9px 11px; }
-    .marquee.bonus-mode { --cell: 34px; max-width: 62vw; }
-    .decor span { font-size: 80px; opacity: 0.06; }
-    .lines-list { font-size: 10px; }
+    :root { --cell: min(12vw, 23vh); }
+    .marquee { margin: 0; padding: 7px 8px; }
+    .marquee.bonus-mode { --cell: min(8.5vw, 17vh); max-width: 58vw; }
+    .decor span { font-size: 60px; opacity: 0.045; }
+    .win-banner { font-size: 13px; margin-top: 3px; min-height: 0; }
+    .lines-list { font-size: 9px; line-height: 1.28; max-height: 3.4em; overflow: hidden; }
+    .free-spin-hud { font-size: 9px; padding: 3px 8px; margin: 3px auto 0; }
 
     .control-deck {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       align-items: stretch;
+      width: min(33vw, 250px);
     }
-    .control-deck .controls {
-      margin: 0;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .add-amount-group {
-      flex-direction: row;
-      align-items: center;
-      min-width: 0;
-      gap: 8px;
-    }
-    .add-amount-group label { font-size: 11px; }
-    .add-slider { width: 120px; }
-    .add-credit-btn { font-size: 12px; padding: 7px 12px; }
-    .stat { min-width: 78px; padding: 4px 10px; }
-    .stat .value { font-size: 15px; }
-    .spin-btn { padding: 10px 24px; font-size: 15px; }
+    .control-deck .controls { margin: 0; gap: 5px; flex-wrap: wrap; justify-content: center; }
+    .add-amount-group { flex-direction: row; flex-wrap: wrap; justify-content: center; align-items: center; min-width: 0; gap: 5px; }
+    .add-amount-group label { font-size: 8.5px; }
+    .add-slider { width: 100%; max-width: 180px; }
+    .add-credit-btn { font-size: 10px; padding: 5px 8px; }
+    .stat { min-width: 0; flex: 1 1 62px; padding: 3px 7px; }
+    .stat .label { font-size: 7.5px; letter-spacing: 0.5px; }
+    .stat .value { font-size: 13px; }
+    .bet-stepper { gap: 4px; }
+    .step-btn { width: 28px; height: 28px; font-size: 15px; }
+    .spin-btn { padding: 9px 14px; font-size: 14px; flex: 1 1 100%; }
+    .auto-btn { padding: 8px 12px; font-size: 11px; flex: 1 1 100%; }
     .sub-note { display: none; }
-    .free-spin-hud { font-size: 11px; padding: 4px 10px; }
-  }
-
-  @media (orientation: landscape) and (max-height: 430px) {
-    :root { --cell: 39px; }
-    .marquee { padding: 8px 10px; }
   }
 
   /* ---------- invito a ruotare il telefono ---------- */
@@ -962,9 +1026,11 @@
     cursor: pointer;
   }
 
-  /* quando gira come app installata */
-  @media (display-mode: standalone) {
+  /* quando gira come app installata / a schermo intero */
+  @media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
     .home-btn { display: none; }
+    .exit-btn { display: flex; }
+    .install-btn { display: none !important; }
   }
 
   /* pulsante "installa app" */
@@ -1002,6 +1068,8 @@
 
 <div class="gold-flash" id="goldFlash"></div>
 <div class="toast" id="toast"></div>
+
+<button class="exit-btn" id="exitBtn" type="button" aria-label="Esci dalla slot" title="Esci">&times;</button>
 
 <h1>Slot della Sagra</h1>
 
@@ -1045,9 +1113,10 @@
     </div>
 
     <button class="spin-btn" id="spinBtn">GIRA</button>
+    <button class="auto-btn" id="autoBtn" type="button">AUTO</button>
   </div>
 
-  <div class="sub-note">9 linee &bull; puntata 0,50&ndash;10.000 &bull; credito fino a 1.000.000 &bull; invio = gira</div>
+  <div class="sub-note">9 linee &bull; puntata 0,50&ndash;10.000 &bull; credito fino a 1.000.000 &bull; AUTO = giri automatici</div>
 </div>
 
 <div class="overlay" id="bonusOverlay">
@@ -1140,7 +1209,7 @@
   const BASE_REELS = 5, BONUS_REELS = 7, ROWS = 3;
   const FREE_SPINS_AWARD = 10;
   const BIG_WIN_MULT = 20;
-  const WILD_EVENT_CHANCE = 0.20;
+  const WILD_EVENT_CHANCE = 0.30;
   const REEL_BASE_DURATION = 1.1;
   const REEL_STAGGER = 0.4;
 
@@ -1779,7 +1848,7 @@
       let i = 0;
       function nextShot() {
         if (i >= positions.length) {
-          wildTimers.push(setTimeout(finale, 360));
+          wildTimers.push(setTimeout(finale, 260));
           return;
         }
         const [c, r] = positions[i];
@@ -1794,17 +1863,17 @@
           if (!hasCustom) wildImpactSound();
         });
         i++;
-        wildTimers.push(setTimeout(nextShot, 210));
+        wildTimers.push(setTimeout(nextShot, 180));
       }
 
       function finale() {
         if (!hasCustom) wildFinaleSound();
         emblem.classList.remove('in');
         emblem.classList.add('out');
-        wildTimers.push(setTimeout(() => { clearWildFx(); resolve(); }, 460));
+        wildTimers.push(setTimeout(() => { clearWildFx(); resolve(); }, 380));
       }
 
-      wildTimers.push(setTimeout(nextShot, 640));
+      wildTimers.push(setTimeout(nextShot, 500));
     });
   }
 
@@ -2010,6 +2079,7 @@
       } else {
         spinning = false;
         renderStats();
+        scheduleAuto(delay);
       }
     } else {
       if (retrigger) {
@@ -2021,6 +2091,7 @@
       spinning = false;
       if (bonus.spinsLeft > 0) {
         renderStats();
+        scheduleAuto(delay);
       } else {
         setTimeout(() => endBonusFeature(), delay);
       }
@@ -2048,6 +2119,7 @@
         playCustom('bonusMusic', { loop: true });
         spinning = false;
         renderStats();
+        scheduleAuto(400);
       }
     });
   }
@@ -2067,11 +2139,46 @@
         bonus = null;
         spinning = false;
         renderStats();
+        scheduleAuto(400);
       }
     });
   }
 
   spinBtn.addEventListener('click', () => performSpin(!!bonus));
+
+  // ---------- autospin ----------
+  const autoBtn = document.getElementById('autoBtn');
+  let autoSpin = false;
+  let autoTimer = null;
+  function stopAuto() {
+    autoSpin = false;
+    autoBtn.classList.remove('on');
+    autoBtn.textContent = 'AUTO';
+    clearTimeout(autoTimer);
+  }
+  function startAuto() {
+    autoSpin = true;
+    autoBtn.classList.add('on');
+    autoBtn.textContent = 'STOP';
+    scheduleAuto(150);
+  }
+  function scheduleAuto(delay) {
+    if (!autoSpin) return;
+    clearTimeout(autoTimer);
+    autoTimer = setTimeout(tryAutoSpin, delay);
+  }
+  function tryAutoSpin() {
+    if (!autoSpin) return;
+    if (spinning) { scheduleAuto(300); return; }
+    if (bonusOverlay.classList.contains('show')
+        || document.getElementById('paytableOverlay').classList.contains('show')) {
+      scheduleAuto(500);
+      return;
+    }
+    if (!bonus && balance < BET_STEPS[betIndex]) { stopAuto(); return; }
+    performSpin(!!bonus);
+  }
+  autoBtn.addEventListener('click', () => { autoSpin ? stopAuto() : startAuto(); });
 
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter') return;
@@ -2126,6 +2233,40 @@
   }
   tryLockLandscape();
   window.addEventListener('orientationchange', tryLockLandscape);
+
+  // ---------- schermo intero (nasconde barre e tasti del telefono) ----------
+  function enterFullscreen() {
+    const el = document.documentElement;
+    const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen;
+    if (!req || document.fullscreenElement) return;
+    try {
+      const p = req.call(el, { navigationUI: 'hide' });
+      if (p && p.catch) p.catch(() => {});
+    } catch (e) {
+      try { req.call(el); } catch (e2) {}
+    }
+    tryLockLandscape();
+  }
+  // al primo tocco su un telefono: entra a schermo intero (richiede un gesto utente)
+  if (window.matchMedia('(pointer: coarse)').matches) {
+    window.addEventListener('pointerdown', function onFirstTap() {
+      window.removeEventListener('pointerdown', onFirstTap);
+      enterFullscreen();
+    }, { once: true });
+  }
+
+  // ---------- X per uscire ----------
+  // esce dallo schermo intero (fa ricomparire barre e tasti del telefono) e
+  // prova a chiudere la finestra; se il sistema non lo permette, resta la slot
+  // con l'interfaccia del telefono di nuovo visibile
+  document.getElementById('exitBtn').addEventListener('click', async () => {
+    stopAuto();
+    try {
+      const exit = document.exitFullscreen || document.webkitExitFullscreen;
+      if (document.fullscreenElement && exit) await exit.call(document);
+    } catch (e) {}
+    try { window.close(); } catch (e) {}
+  });
 
   renderStats();
 </script>
