@@ -1974,7 +1974,12 @@
     }
 
     const FILLER = 14;
-    const CELL_PX = parseInt(getComputedStyle(marqueeEl).getPropertyValue('--cell'), 10);
+    // dimensione reale di una casella in px: NON leggibile da --cell, che ora
+    // vale un'espressione min(...); si misura dal rullo gia' renderizzato
+    const firstReel = reelsEl.querySelector('.reel');
+    const CELL_PX = firstReel
+      ? firstReel.getBoundingClientRect().height / ROWS
+      : (parseInt(getComputedStyle(marqueeEl).getPropertyValue('--cell'), 10) || 80);
     let lastDuration = 0;
 
     startSpinSound();
