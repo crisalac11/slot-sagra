@@ -1,11 +1,15 @@
 /* Service worker per "Slot della Sagra" — installabile e funzionante offline.
    Ad ogni modifica dei file, alza CACHE_VERSION per forzare l'aggiornamento. */
-const CACHE_VERSION = 'slot-sagra-v5';
+const CACHE_VERSION = 'slot-sagra-v14';
 
 /* Risorse messe in cache all'installazione: dopo la prima apertura la slot
    funziona anche senza connessione. */
 const PRECACHE_URLS = [
   './slot.html',
+  './slot.css',
+  './slot.js',
+  './pieronzo.js',
+  './pwa.js',
   './manifest.webmanifest',
   './images/icons/icon-192.png',
   './images/icons/icon-512.png',
